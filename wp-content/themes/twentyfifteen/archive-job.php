@@ -17,17 +17,15 @@ Template Name: Job Listings Custom Post Type Template
 
 get_header(); ?>
 
-    <div class="list-container">
+<div class="list-container">
 
         <h1>Custom Post Type Output Below</h1>
 
         <?php
         $args = array(
             'post_type'      => 'job',
-//             'posts_per_page' => 10,
             'orderby'        => 'title',
             'order'          => 'asc',
-//            'paged'          => get_query_var('paged')
         );
 
   $lib_query = new WP_Query($args);
@@ -49,9 +47,7 @@ get_header(); ?>
       <?php endwhile;
       wp_reset_postdata();
   }
-        ?>
-    </div>
-
-
+  ?>
+</div>
 
 <?php get_footer(); ?>
