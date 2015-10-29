@@ -38,7 +38,6 @@ get_header(); ?>
 
           ?>
           <div class="single-job">
-<!--              <h2>--><?php //the_title(); ?><!--</h2>-->
 
               <p><?php echo get_post_meta($post->ID, '_job_title', true); ?></p>
 
@@ -46,26 +45,6 @@ get_header(); ?>
 
               <p style="background: url(<?php echo $img_src[0]; ?>); height: 100px;"></p>
 
-
-
-
-
-              <?php
-//              $attachments = array();
-//              $attachment_url = '';
-//              $attach_args = array(
-//                  'post_parent'    => $post->ID,
-//                  'post_type'      => 'attachment',
-//                  'numberposts'    => 1,
-//                  'posts_per_page' => -1,
-//                  'post_status'    => 'any'
-//              );
-//              $attachments = get_posts($attach_args);
-//              if (!empty($attachments)) {
-//                  $attachment_url = wp_get_attachment_url($attachments[0]->ID);
-//              }
-              ?>
-<!--              <a class="btn" href="--><?php //echo $attachment_url; ?><!--">Download PDF</a>-->
           </div>
       <?php endwhile;
       wp_reset_postdata();
