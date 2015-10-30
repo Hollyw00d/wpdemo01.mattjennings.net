@@ -78,23 +78,32 @@ function job_listings_add_meta_box() {
 
         add_meta_box(
             'jobs_listings_id',
-            __( 'Job Title', 'job_listings_plugin' ),
+            __( 'Job', 'job_listings_plugin' ),
             'jobs_listings_meta_box_callback',
             // Slug that matches the custom post type above
             'job'
         );
 
 }
+
 function jobs_listings_meta_box_callback($post) {
+
 
     // Add a nonce field so we can check for it later.
     wp_nonce_field( 'myplugin_save_meta_box_data', 'myplugin_meta_box_nonce' );
 
-    $value = get_post_meta($post->ID, '_job_title', true);
+    $job_title_value = get_post_meta($post->ID, '_job_title', true);
+    $job_salary_value = get_post_meta($post->ID, '_job_salary', true);
 
-    echo '<input type="text" name="job_title" id="' . $post->ID . '" value="' . $value . '" />';
+
+    echo '<p><lable for="job_title">Title</lable>
+        <input type="text" name="job_title" id="' . $post->ID . '" value="' . $job_title_value . '" style="width: 100%;" /></p>';
+
+    echo '<p><lable for="job_salary">Salary</lable>
+        <input type="text" name="job_salary" id="' . $post->ID . '" value="' . $job_salary_value . '" style="width: 100%;" /></p>';
+
+
 }
-
 
 add_action( 'add_meta_boxes', 'job_listings_add_meta_box' );
 
@@ -128,15 +137,19 @@ function jobs_save_meta_box_data( $post_id ) {
     /* OK, it's safe for us to save the data now. */
 
     // Make sure that it is set.
-    if ( ! isset( $_POST['job_title'] ) ) {
+    if ( !isset( $_POST['job_title']) || !isset( $_POST['job_salary'])) {
         return;
     }
 
     // Sanitize user input.
-    $my_data = sanitize_text_field( $_POST['job_title'] );
+    $my_data_job_title = sanitize_text_field( $_POST['job_title'] );
+    $my_data_job_salary = sanitize_text_field( $_POST['job_salary'] );
+
 
     // Update the meta field in the database.
-    update_post_meta( $post_id, '_job_title', $my_data );
+    update_post_meta( $post_id, '_job_title', $my_data_job_title );
+    update_post_meta( $post_id, '_job_salary', $my_data_job_salary );
+
 }
 add_action( 'save_post', 'jobs_save_meta_box_data' );
 
