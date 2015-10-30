@@ -51,7 +51,7 @@ function dwwp_register_post_type() {
         'capability_type'       => 'post',
         'map_meta_cap'          => true,
         'rewrite'               => array(
-            'slug'                  => 'jobs',
+            'slug'                  => 'job-listings',
             'with_front'            => true,
             'pages'                 => true,
             'feeds'                 => true
