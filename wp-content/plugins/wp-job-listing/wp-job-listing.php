@@ -81,7 +81,7 @@ function job_listings_add_meta_box() {
             __( 'Job', 'job_listings_plugin' ),
             'jobs_listings_meta_box_callback',
             // Slug that matches the custom post type above
-            'job'
+            'jobs'
         );
 
 }
