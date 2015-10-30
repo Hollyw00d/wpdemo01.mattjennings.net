@@ -1,13 +1,6 @@
 <?php
-/**
- * Plugin Name: WP Job Listing
- * Plugin URI: http://hatrackmedia.com
- * Description: This plugin allows you to add a simple job listing section to your WordPress website.
- * Author: Bobby Bryant
- * Author URI: http://hatrackmedia.com
- * Version: 0.0.1
- * License: GPLv2
- */
+/* NO COMMENTS AS THIS IS A COPY OF THE PLUGIN */
+
 // Exit if accessed directly
 if(!defined('ABSPATH')) {
     exit;
@@ -17,6 +10,7 @@ if(!defined('ABSPATH')) {
 function dwwp_register_post_type() {
     $singular = 'Job Listing';
     $plural = $singular . 's';
+
     $labels = array(
         'name'                  => $plural,
         'singular_name'         => $singular,
@@ -32,6 +26,7 @@ function dwwp_register_post_type() {
         'not_found'             => 'No ' . $plural . ' found',
         'not_found_in_trash'    => 'No ' . $plural . ' in Trash'
     );
+
     $args = array(
         'labels'                => $labels,
         'public'                => true,
@@ -46,13 +41,13 @@ function dwwp_register_post_type() {
         'can_export'            => true,
         'delete_with_user'      => false,
         'hierarchical'          => false,
-        // Use this is post type doesn't need archive page
-        'has_archive'           => false,
+        'has_archive'           => true,
         'query_var'             => true,
         'capability_type'       => 'post',
         'map_meta_cap'          => true,
+        // 'capabilities'       => array(),
         'rewrite'               => array(
-            'slug'                  => 'job-listings',
+            'slug'                  => 'jobs',
             'with_front'            => true,
             'pages'                 => true,
             'feeds'                 => true
@@ -62,24 +57,30 @@ function dwwp_register_post_type() {
             'thumbnail'
         )
     );
+
     register_post_type('job', $args);
 }
 add_action('init', 'dwwp_register_post_type');
+
 
 /**
  * Adds a box to the main column on the Post and Page edit screens.
  */
 function job_listings_add_meta_box() {
-    add_meta_box(
-        'jobs_listings_id',
-        __( 'New Job', 'job_listings_plugin' ),
-        'jobs_listings_meta_box_callback',
-        // Slug that matches the custom post type above
-        'job'
-    );
+
+        add_meta_box(
+            'jobs_listings_id',
+            __( 'Job', 'job_listings_plugin' ),
+            'jobs_listings_meta_box_callback',
+            // Slug that matches the custom post type above
+            'jobs'
+        );
+
 }
 
 function jobs_listings_meta_box_callback($post) {
+
+
     // Add a nonce field so we can check for it later.
     wp_nonce_field( 'myplugin_save_meta_box_data', 'myplugin_meta_box_nonce' );
 
@@ -87,19 +88,22 @@ function jobs_listings_meta_box_callback($post) {
     $job_salary_value = get_post_meta($post->ID, '_job_salary', true);
 
 
-    echo '<p><label for="job_title">Title</label> <input type="text" name="job_title" id="' . $post->ID . '" value="' . $job_title_value . '" style="width: 100%;" /></p>';
+    echo 'JOB TITLE INPUT <p><label for="job_title">Title</label> <input type="text" name="job_title" id="' . $post->ID . '" value="' . $job_title_value . '" style="width: 100%;" /></p>';
 
-    echo '<p><label for="job_salary">Salary</label> <input type="text" name="job_salary" id="' . $post->ID . '" value="' . $job_salary_value . '" style="width: 100%;" /></p>';
+    echo 'JOB SALARY INPUT <p><label for="job_salary">Salary</label> <input type="text" name="job_salary" id="' . $post->ID . '" value="' . $job_salary_value . '" style="width: 100%;" /></p>';
+
+
 }
 
 add_action( 'add_meta_boxes', 'job_listings_add_meta_box' );
 
-
 function jobs_save_meta_box_data( $post_id ) {
+
     /*
      * We need to verify this came from our screen and with proper authorization,
      * because the save_post action can be triggered at other times.
      */
+
     // Check if our nonce is set.
     if ( ! isset( $_POST['myplugin_meta_box_nonce'] ) ) {
         return;
@@ -115,13 +119,15 @@ function jobs_save_meta_box_data( $post_id ) {
         return;
     }
 
+
     if ( ! current_user_can( 'edit_post', $post_id ) ) {
         return;
     }
 
     /* OK, it's safe for us to save the data now. */
+
     // Make sure that it is set.
-    if ( !isset($_POST['job_title']) && !isset($_POST['job_salary']) ) {
+    if ( !isset( $_POST['job_title']) || !isset( $_POST['job_salary'])) {
         return;
     }
 
@@ -129,9 +135,13 @@ function jobs_save_meta_box_data( $post_id ) {
     $my_data_job_title = sanitize_text_field( $_POST['job_title'] );
     $my_data_job_salary = sanitize_text_field( $_POST['job_salary'] );
 
+
     // Update the meta field in the database.
     update_post_meta( $post_id, '_job_title', $my_data_job_title );
     update_post_meta( $post_id, '_job_salary', $my_data_job_salary );
 
 }
 add_action( 'save_post', 'jobs_save_meta_box_data' );
+
+
+
