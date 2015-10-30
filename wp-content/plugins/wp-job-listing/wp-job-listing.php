@@ -96,11 +96,9 @@ function jobs_listings_meta_box_callback($post) {
     $job_salary_value = get_post_meta($post->ID, '_job_salary', true);
 
 
-    echo '<p><lable for="job_title">Title</lable>
-        <input type="text" name="job_title" id="' . $post->ID . '" value="' . $job_title_value . '" style="width: 100%;" /></p>';
+    echo 'JOB TITLE INPUT <p><label for="job_title">Title</label> <input type="text" name="job_title" id="' . $post->ID . '" value="' . $job_title_value . '" style="width: 100%;" /></p>';
 
-    echo '<p><lable for="job_salary">Salary</lable>
-        <input type="text" name="job_salary" id="' . $post->ID . '" value="' . $job_salary_value . '" style="width: 100%;" /></p>';
+    echo 'JOB SALARY INPUT <p><label for="job_salary">Salary</label> <input type="text" name="job_salary" id="' . $post->ID . '" value="' . $job_salary_value . '" style="width: 100%;" /></p>';
 
 
 }
