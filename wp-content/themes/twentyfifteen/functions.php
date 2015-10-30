@@ -333,6 +333,15 @@ function twentyfifteen_search_form_modify( $html ) {
 }
 add_filter( 'get_search_form', 'twentyfifteen_search_form_modify' );
 
+
+// Get Custom Post Type Template for a Single Post
+function my_single_template($single) {
+	if(file_exists(get_template_directory() . '/single-' . get_the_ID() . '.php'))
+		return get_template_directory() . '/single-' . get_the_ID() . '.php';
+	return $single;
+}
+add_filter('single_template', 'my_single_template');
+
 /**
  * Implement the Custom Header feature.
  *
