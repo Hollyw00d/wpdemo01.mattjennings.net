@@ -50,7 +50,6 @@ function dwwp_register_post_type() {
         'query_var'             => true,
         'capability_type'       => 'post',
         'map_meta_cap'          => true,
-        // 'capabilities'       => array(),
         'rewrite'               => array(
             'slug'                  => 'jobs',
             'with_front'            => true,
@@ -83,10 +82,6 @@ function jobs_listings_meta_box_callback($post) {
     // Add a nonce field so we can check for it later.
     wp_nonce_field( 'myplugin_save_meta_box_data', 'myplugin_meta_box_nonce' );
 
-    //$value = get_post_meta($post->ID, '_job_title', true);
-
-    //echo '<input type="text" name="job_title" id="' . $post->ID . '" value="' . $value . '" />';
-
     $job_title_value = get_post_meta($post->ID, '_job_title', true);
     $job_salary_value = get_post_meta($post->ID, '_job_salary', true);
 
@@ -94,7 +89,6 @@ function jobs_listings_meta_box_callback($post) {
     echo '<p><label for="job_title">Title</label> <input type="text" name="job_title" id="' . $post->ID . '" value="' . $job_title_value . '" style="width: 100%;" /></p>';
 
     echo '<p><label for="job_salary">Salary</label> <input type="text" name="job_salary" id="' . $post->ID . '" value="' . $job_salary_value . '" style="width: 100%;" /></p>';
-
 }
 
 add_action( 'add_meta_boxes', 'job_listings_add_meta_box' );
@@ -109,29 +103,32 @@ function jobs_save_meta_box_data( $post_id ) {
     if ( ! isset( $_POST['myplugin_meta_box_nonce'] ) ) {
         return;
     }
+
     // Verify that the nonce is valid.
     if ( ! wp_verify_nonce( $_POST['myplugin_meta_box_nonce'], 'myplugin_save_meta_box_data' ) ) {
         return;
     }
+
     // If this is an autosave, our form has not been submitted, so we don't want to do anything.
     if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
         return;
     }
+
     if ( ! current_user_can( 'edit_post', $post_id ) ) {
         return;
     }
+
     /* OK, it's safe for us to save the data now. */
     // Make sure that it is set.
-    if ( ! isset( $_POST['job_title'] ) ) {
+    if ( !isset($_POST['job_title']) && !isset($_POST['job_salary']) ) {
         return;
     }
+
     // Sanitize user input.
-//    $my_data = sanitize_text_field( $_POST['job_title'] );
     $my_data_job_title = sanitize_text_field( $_POST['job_title'] );
     $my_data_job_salary = sanitize_text_field( $_POST['job_salary'] );
 
     // Update the meta field in the database.
-//    update_post_meta( $post_id, '_job_title', $my_data );
     update_post_meta( $post_id, '_job_title', $my_data_job_title );
     update_post_meta( $post_id, '_job_salary', $my_data_job_salary );
 
