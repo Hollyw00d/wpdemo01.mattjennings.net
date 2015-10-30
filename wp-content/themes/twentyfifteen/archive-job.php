@@ -37,10 +37,13 @@ get_header(); ?>
           ?>
           <div class="single-job">
 
-              <p><?php echo get_post_meta($post->ID, '_job_title', true); ?></p>
+              <p><strong><a href="<?php the_permalink(); ?>">_job_title:</strong> <?php echo get_post_meta($post->ID, '_job_title', true); ?></a></p>
 
-              <p><?php echo get_the_post_thumbnail(); ?></p>
+              <p><strong>_job_salary:</strong> <?php echo get_post_meta($post->ID, '_job_salary', true); ?></p>
 
+              <p><strong>Single Image:</strong><br /><?php echo get_the_post_thumbnail(); ?></p>
+
+              <p><strong>Background Image:</strong></p>
               <p style="background: url(<?php echo $img_src[0]; ?>); height: 100px;"></p>
 
           </div>

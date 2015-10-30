@@ -1,6 +1,6 @@
 <?php
 /*
-Template Name: Seattle Teams Page
+Template Name: Job Listings
 */
 
 /**
