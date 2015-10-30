@@ -12,6 +12,7 @@
 if(!defined('ABSPATH')) {
     exit;
 }
+
 // Create a custom post type
 function dwwp_register_post_type() {
     $singular = 'Job Listing';
@@ -64,25 +65,41 @@ function dwwp_register_post_type() {
     register_post_type('job', $args);
 }
 add_action('init', 'dwwp_register_post_type');
+
 /**
  * Adds a box to the main column on the Post and Page edit screens.
  */
 function job_listings_add_meta_box() {
     add_meta_box(
         'jobs_listings_id',
-        __( 'Job Title', 'job_listings_plugin' ),
+        __( 'New Job', 'job_listings_plugin' ),
         'jobs_listings_meta_box_callback',
         // Slug that matches the custom post type above
         'job'
     );
 }
+
 function jobs_listings_meta_box_callback($post) {
     // Add a nonce field so we can check for it later.
     wp_nonce_field( 'myplugin_save_meta_box_data', 'myplugin_meta_box_nonce' );
-    $value = get_post_meta($post->ID, '_job_title', true);
-    echo '<input type="text" name="job_title" id="' . $post->ID . '" value="' . $value . '" />';
+
+    //$value = get_post_meta($post->ID, '_job_title', true);
+
+    //echo '<input type="text" name="job_title" id="' . $post->ID . '" value="' . $value . '" />';
+
+    $job_title_value = get_post_meta($post->ID, '_job_title', true);
+    $job_salary_value = get_post_meta($post->ID, '_job_salary', true);
+
+
+    echo '<p><label for="job_title">Title</label> <input type="text" name="job_title" id="' . $post->ID . '" value="' . $job_title_value . '" style="width: 100%;" /></p>';
+
+    echo '<p><label for="job_salary">Salary</label> <input type="text" name="job_salary" id="' . $post->ID . '" value="' . $job_salary_value . '" style="width: 100%;" /></p>';
+
 }
+
 add_action( 'add_meta_boxes', 'job_listings_add_meta_box' );
+
+
 function jobs_save_meta_box_data( $post_id ) {
     /*
      * We need to verify this came from our screen and with proper authorization,
@@ -109,8 +126,14 @@ function jobs_save_meta_box_data( $post_id ) {
         return;
     }
     // Sanitize user input.
-    $my_data = sanitize_text_field( $_POST['job_title'] );
+//    $my_data = sanitize_text_field( $_POST['job_title'] );
+    $my_data_job_title = sanitize_text_field( $_POST['job_title'] );
+    $my_data_job_salary = sanitize_text_field( $_POST['job_salary'] );
+
     // Update the meta field in the database.
-    update_post_meta( $post_id, '_job_title', $my_data );
+//    update_post_meta( $post_id, '_job_title', $my_data );
+    update_post_meta( $post_id, '_job_title', $my_data_job_title );
+    update_post_meta( $post_id, '_job_salary', $my_data_job_salary );
+
 }
 add_action( 'save_post', 'jobs_save_meta_box_data' );
