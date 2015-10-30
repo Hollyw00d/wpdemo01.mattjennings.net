@@ -25,14 +25,6 @@ get_header(); ?>
     // Start the loop.
     while ( have_posts() ) : the_post();
 
-        /*
-         * Include the post format-specific template for the content. If you want to
-         * use this in a child theme, then include a file called called content-___.php
-         * (where ___ is the post format) and that will be used instead.
-         */
-
-        // get_template_part( 'content', get_post_format() );
-
         $img_src = wp_get_attachment_image_src(get_post_thumbnail_id($post->ID));
     ?>
 
@@ -53,7 +45,6 @@ get_header(); ?>
     <?php
         // End the loop.
     endwhile;
-    wp_reset_postdata();
     ?>
 
 

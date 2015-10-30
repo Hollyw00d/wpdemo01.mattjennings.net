@@ -25,9 +25,10 @@ get_header(); ?>
 				'post_type'      => 'job',
 				'orderby'        => 'title',
 				'order'          => 'asc',
+				'posts_per_page' => 3
 			);
 
-			$lib_query = new WP_Query(array('post_type' => 'job', 'order' => 'asc', 'posts_per_page' => 3));
+			$lib_query = new WP_Query($args);
 			if ($lib_query->have_posts()) {
 				while ($lib_query->have_posts()) : $lib_query->the_post();
 

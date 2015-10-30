@@ -46,7 +46,8 @@ function dwwp_register_post_type() {
         'can_export'            => true,
         'delete_with_user'      => false,
         'hierarchical'          => false,
-        'has_archive'           => true,
+        // Use this is post type doesn't need archive page
+        'has_archive'           => false,
         'query_var'             => true,
         'capability_type'       => 'post',
         'map_meta_cap'          => true,
