@@ -74,7 +74,11 @@ function job_listings_add_meta_box() {
         'jobs_listings_id',
         __( 'New Job', 'job_listings_plugin' ),
         'jobs_listings_meta_box_callback',
-        // Slug that matches the custom post type above
+        // This is the name of the custom post type,
+        // does NOT need to 'slug' element of the
+        // $args array above,
+        // and must be only letter with no
+        // special characters
         'job'
     );
 }
